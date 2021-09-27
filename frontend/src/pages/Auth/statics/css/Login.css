@@ -1,0 +1,10 @@
+.Auth {
+  height: 100vh;
+  background-color: #eceff1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../images/web_design_desk2.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}

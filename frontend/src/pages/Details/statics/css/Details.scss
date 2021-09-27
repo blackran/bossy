@@ -1,0 +1,63 @@
+.Details {
+  padding-top: 70px;
+  .body {
+    max-width: 726px;
+    margin: auto;
+    .image {
+      position: relative;
+      .eye {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        padding: 4px;
+        border-radius: 4px;
+        background-color: white;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      img {
+        width: 100%;
+      }
+    }
+    .Correction {
+      padding: 8px 0;
+      border-radius: 4px;
+      &>h1 {
+        font-size: 24px;
+      }
+      .listeCorrection {
+        .oneBlock {
+          &:hover {
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+          }
+          margin: 8px;
+          border-radius: 4px;
+          background-color: #e6e5e5;
+          padding: 8px;
+          .head {
+            display: flex;
+            align-items: center;
+            h1{
+              font-size: 20px;
+              margin: 0 0 4px 8px;
+            }
+          }
+          .description {
+            font-size: 12px;
+            padding: 4px;
+          }
+          .footer {
+            font-size: 10px;
+            opacity: 0.7;
+            p {
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

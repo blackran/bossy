@@ -1,0 +1,49 @@
+{
+  "name": "lesson-manager",
+  "version": "1.0.0",
+  "description": "projet lesson manager",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "start:prod": "NODE_ENV=production nodemon server.js",
+    "dev": "nodemon server.js"
+  },
+  "author": "akanga developpeur",
+  "license": "MIT",
+  "dependencies": {
+    "@sendgrid/mail": "^7.4.6",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-flash": "^0.0.2",
+    "express-flash-message": "^2.1.0",
+    "express-jwt": "^6.1.0",
+    "express-mongo-sanitize": "^2.1.0",
+    "express-validator": "^6.12.1",
+    "google-auth-library": "^7.9.1",
+    "helmet": "^4.6.0",
+    "hpp": "^0.2.3",
+    "joi": "^17.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "mailtrap": "^2.0.2",
+    "mailtrap-client": "^1.1.1",
+    "mongodb": "^4.1.1",
+    "mongoose": "^6.0.5",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.3",
+    "node-fetch": "^3.0.0",
+    "nodemailer": "^6.6.3",
+    "rootpath": "^0.1.2",
+    "sharp": "^0.29.1",
+    "slugify": "^1.6.0",
+    "validator": "^13.6.0",
+    "xss-clean": "^0.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}

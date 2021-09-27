@@ -1,0 +1,49 @@
+.Principal {
+  background-color: #efefef; 
+  min-height: 100vh;
+}
+
+.Principal .nav_float {
+  position: fixed;
+  top: 50vh;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.Principal .nav_float ul{
+  margin: 0px;
+}
+
+.Principal .nav_float ul li{
+  border-radius: 10px;
+  padding: 5px;
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  background: white;
+}
+
+.Principal .nav_float ul a{
+  text-decoration: none;
+}
+
+.Principal .nav_float ul li:hover{
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  background-color: #3e3e3e;
+  color: white;
+}
+
+.Principal .body {
+  max-width: 800px;
+  margin: auto;
+}
+
+.Principal .body .section {
+  min-height: 100vh;
+  padding: 70px 20px 0 50px;
+}
+

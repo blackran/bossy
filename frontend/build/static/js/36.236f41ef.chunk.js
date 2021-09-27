@@ -1,0 +1,2 @@
+(this.webpackJsonpclient=this.webpackJsonpclient||[]).push([[36],{127:function(s,t,e){"use strict";e.r(t),t.default=e.p+"static/media/short-male-hair-shape.28c2f672.svg"}}]);
+//# sourceMappingURL=36.236f41ef.chunk.js.map

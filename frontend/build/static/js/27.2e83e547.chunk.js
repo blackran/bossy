@@ -1,0 +1,2 @@
+(this.webpackJsonpclient=this.webpackJsonpclient||[]).push([[27],{118:function(t,s,c){"use strict";c.r(s),s.default=c.p+"static/media/human_back.78454d23.svg"}}]);
+//# sourceMappingURL=27.2e83e547.chunk.js.map

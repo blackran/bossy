@@ -1,0 +1,5 @@
+export { default as FormInscription } from './FormInscription'
+export { default as Login } from './Login'
+export { default as Signin } from './Signin'
+export { default as TypeDocument } from './TypeDocument'
+export { default as Confirmation } from './Confirmation'

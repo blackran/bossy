@@ -1,0 +1,2 @@
+(this.webpackJsonpclient=this.webpackJsonpclient||[]).push([[24],{115:function(t,i,s){"use strict";s.r(i),i.default=s.p+"static/media/hair_woman.ed613c20.svg"}}]);
+//# sourceMappingURL=24.ea79462a.chunk.js.map

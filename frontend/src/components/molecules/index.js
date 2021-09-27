@@ -1,0 +1,8 @@
+export { default as Button } from './Button'
+export { default as Input } from './Input'
+export { default as Logo } from './Logo'
+export { default as Select } from './Select'
+export { default as TextArea } from './TextArea'
+export { default as ParagraphIcon } from './ParagraphIcon'
+export { default as OneDocument } from './OneDocument'
+export { default as LireDocument } from './LireDocument'
