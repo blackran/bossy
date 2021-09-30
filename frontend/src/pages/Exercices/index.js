@@ -1,6 +1,6 @@
 import React from 'react';
 import './statics/css/Principal.css';
-import { TypeDocument } from '../../components';
+import { NiveauDocument } from '../../components';
 import Navigation from '../Navigation';
 import axios from 'axios';
 
@@ -21,17 +21,34 @@ function Exercices(props) {
   }, [])
 
   const filtreNiveau = (datas) => {
-    let newData = {};
-    datas.map(data => {
-      if (newData[data.niveau.niveau]) {
-        newData[data.niveau.niveau] = [...newData[data.niveau.niveau], data]
+    let newDatas = {};
+    datas?.map(data => {
+      if (newDatas[data.niveau.niveau]) {
+        newDatas[data.niveau.niveau] = [...newDatas[data.niveau.niveau], data]
       } else {
-        newData[data.niveau.niveau] = [data]
+        newDatas[data.niveau.niveau] = [data]
       }
       return null
     })
-    return newData
+
+    const respData = {};
+    Object.entries(newDatas).map(([key, newDataMap]) => {
+      newDataMap.map(newData => {
+        let stock = {}
+        if (stock[newData.type.type]) {
+          stock[newData.type.type] = [...stock[newData.type.type], newData]
+        } else {
+          stock[newData.type.type] = [newData];
+        }
+
+        respData[key] = stock;
+        return null
+      })
+      return null
+    })
+    return respData;
   }
+
   return (
     <div className="Principal">
       <Navigation {...props} />
@@ -50,7 +67,7 @@ function Exercices(props) {
             Object.entries(filtreNiveau(exercices)).map(([niveau, documents]) => {
               return <div className="section" id={niveau} key={niveau}>
                 Lecon pour les {niveau}
-                <TypeDocument {...{ documents, ...props }} />
+                <NiveauDocument {...{ documents, ...props }} />
               </div>
             })
           }

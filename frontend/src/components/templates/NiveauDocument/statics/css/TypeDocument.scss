@@ -1,0 +1,27 @@
+.rotates {
+  animation-name: rotatekey;
+  animation-duration: .5s;
+}
+
+.rotates-inverse {
+  animation-name: rotatekey-inv;
+  animation-duration: .5s;
+}
+
+@keyframes rotatekey {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(90deg);
+  }
+}
+
+@keyframes rotatekey-inv {
+  from {
+    transform: rotate(90deg);
+  }
+  to {
+    transform: rotate(0);
+  }
+}

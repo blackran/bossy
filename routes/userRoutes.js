@@ -17,8 +17,9 @@ router.patch('/user/resetPassword/:token', authController.resetPassword);
 
 router.get('/user/Profile', userController.userProfile);
 
-router.get('/user/myProfile', authController.protect
-    , userController.myProfile)
+router.get('/user/myProfile/:id', userController.myProfile)
+// router.get('/user/myProfile/:id', authController.protect
+//     , userController.myProfile)
 
 router.patch('/user/updateMe', authController.protect
     , userController.uploadUserPhoto

@@ -1,2 +1,0 @@
-(this.webpackJsonpclient=this.webpackJsonpclient||[]).push([[34],{125:function(t,c,e){"use strict";e.r(c),c.default=e.p+"static/media/region.e40bcc3f.svg"}}]);
-//# sourceMappingURL=34.71c36f64.chunk.js.map

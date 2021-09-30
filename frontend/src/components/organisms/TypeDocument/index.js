@@ -23,7 +23,11 @@ function TypeDocument(props) {
         setShow(!show)
         setStart(false)
       }}
-    > <i className={hidden ? 'fa fa-caret-right rotates fa-rotate-90' : (start? 'fa fa-caret-right': 'fa fa-caret-right rotates-inverse')}></i> Malagasy</h1>
+    > <i 
+      style={{ marginRight: 5 }}
+      className={hidden ? 'fa fa-caret-right rotates fa-rotate-90' : (start? 'fa fa-caret-right': 'fa fa-caret-right rotates-inverse')}></i>
+      { props?.title }
+    </h1>
     {
       hidden && (
         <div style={styles(props).body}>

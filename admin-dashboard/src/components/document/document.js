@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import Swal from "sweetalert2";
 import FormModal from './formModal'
 import FormEdit from './formEdit'
 import './style.css'
 
 
-const Document = (props) => {
+const Document = () => {
     const [listDoc, setListDoc] = useState([]);
     const [idEdit, setIdEdit] = useState()
 
@@ -20,39 +21,41 @@ const Document = (props) => {
         //   .catch(error => alert('Error fetching posts'));
     };
 
-    useEffect(() => {
-        insertScriptElement({ url: 'app-assets/vendors/js/tables/datatable/datatables.min.js' })
-        insertScriptElement({ url: 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' })
-        insertScriptElement({ url: 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' })
-        insertScriptElement({ url: 'app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js' })
-        insertScriptElement({ url: 'app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js' })
-        insertScriptElement({ url: 'app-assets/js/scripts/datatables/datatable.js' })
 
-    }, [listDoc])
 
 
     useEffect(() => {
         fetchDocs();
     }, []);
 
-    const deleteConfirm = (_id) => {
-        let answer = window.confirm('Are you sure you want delete this post?')
-
-        if (answer) {
-            deleteDocument(_id)
-        }
-    }
 
     const deleteDocument = (_id) => {
         // console.log('delete', slug, 'post');
-        axios
-            // .delete(`${process.env.REACT_APP_API}/post/${slug}`)
-            .delete(`${process.env.REACT_APP_API}/api/document/${_id}`)
-            .then(response => {
-                // alert(response.data.message);
-                fetchDocs();
-            })
-            .catch(error => console.log(error))
+        Swal.fire({
+            title: 'Etes-vous sûr?',
+            text: "Vous ne pourrez pas revenir en arrière!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Oui, supprimez-le!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios
+                    // .delete(`${process.env.REACT_APP_API}/post/${slug}`)
+                    .delete(`${process.env.REACT_APP_API}/api/document/${_id}`)
+                    .then(response => {
+                        // alert(response.data.message);
+                        Swal.fire(
+                            'Deleted!',
+                            'votre document a été supprimé.',
+                            'success'
+                        )
+                        fetchDocs();
+                    })
+
+            }
+        })
 
     }
 
@@ -95,7 +98,7 @@ const Document = (props) => {
                                                         <td className="product-price">{list.niveau.niveau}</td>
                                                         <td className="product-action">
                                                             <span onClick={() => setIdEdit(list._id)} className="action-edit" data-toggle="modal" data-target="#default1"><i className="feather icon-edit"></i></span>
-                                                            <span onClick={() => deleteConfirm(list._id)} className="action-delete"><i className="feather icon-trash"></i></span>
+                                                            <span onClick={() => deleteDocument(list._id)} className="action-delete"><i className="feather icon-trash"></i></span>
                                                         </td>
                                                     </tr>
                                                 })}
@@ -117,26 +120,11 @@ const Document = (props) => {
                     </div>
                 </div>
             </section>
-            <FormModal />
-            {idEdit && <FormEdit id={idEdit} />}
+            <FormModal fetchDocs={fetchDocs} />
+            {idEdit && <FormEdit id={idEdit} fetchDocs={fetchDocs} />}
         </div>
     )
 }
 
-
-function insertScriptElement({ url, attributes = {}, properties = {} }) {
-    const newScript = document.createElement('script');
-    newScript.onerror = (err => console.error('An error occured while loading the PayPal JS SDK', err));
-    // if (callback) {
-    //     newScript.onload = callback;
-    // }
-
-    Object.keys(attributes).forEach(key => {
-        newScript.setAttribute(key, attributes[key]);
-    });
-
-    document.head.appendChild(newScript);
-    newScript.src = url;
-}
 
 export default Document

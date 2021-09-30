@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import Swal from "sweetalert2";
 
-function FormModal() {
+function FormModal(props) {
 
     const [typeList, setTypeList] = useState([]);
     const [niveauList, setNiveauList] = useState([]);
@@ -10,35 +11,46 @@ function FormModal() {
         description: '',
         type: '',
         niveau: '',
-        categorie: 'Lecon',
+        categorie: 'lecon',
         contenu: '',
     });
 
     const fecthNiveau = () => {
         axios.get(`${process.env.REACT_APP_API}/api/niveau`)
             .then(response => {
-                //   console.log(response.data.data.Niveau);
-                setNiveauList(response.data.data.Niveau);
+                if (response?.data?.data) {
+                    const niveaux = response.data.data.Niveau;
+                    console.log(niveaux[0]._id);
+                    setState({ ...state, ['niveau']: niveaux[0]._id });
+                    setNiveauList(niveaux);
+                    console.log(state)
+                }
             })
-        //  .catch(error => alert('Error fetching niveau'))
+            .catch(error => setState({ ...state }))
         //  .catch(error => alert('Error fetching niveau'))
     }
 
     const fecthType = () => {
         axios.get(`${process.env.REACT_APP_API}/api/type`)
             .then(response => {
+                if (response?.data?.data) {
 
-                setTypeList(response.data.data.Type);
+                    const types = response.data.data.Type;
+                    setState({ ...state, ['type']: types[0]._id });
+                    console.log(types[0]._id)
+                    setTypeList(types);
+                }
             })
         //  .catch(error => alert('Error fetching type'))
     }
 
     useEffect(() => {
-
         fecthNiveau()
-        fecthType()
-
     }, [])
+
+    useEffect(() => {
+        fecthType()
+    }, [state.niveau])
 
 
     const { titre, description, type, niveau, categorie, contenu } = state;
@@ -84,13 +96,23 @@ function FormModal() {
             .then(response => {
                 console.log(response);
                 // empty state
-                setState({ ...state, titre: '', description: '', type: '', niveau: '', categorie: '', contenu: '' });
+                setState({ ...state, titre: '', description: '', categorie: 'lecon', contenu: '' });
+                fecthNiveau()
+                fecthType()
                 // show sucess alert
-                alert(`Document a été crée`);
+                props.fetchDocs()
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Bonne travail',
+                    text: 'Vous avez ajouté avec succès une nouvelle document!'
+                })
             })
             .catch(error => {
-                console.log(error);
-                alert(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'oups...',
+                    text: "Quelque chose s'est mal passé! réessayer",
+                })
             });
     };
 
@@ -100,7 +122,7 @@ function FormModal() {
             <div className="modal-dialog modal-dialog-scrollable" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h4 className="modal-title" id="myModalLabel1">Basic Modal</h4>
+                        <h4 className="modal-title" id="myModalLabel1">Formulaire pour ajouter le document</h4>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -117,6 +139,7 @@ function FormModal() {
                                                 value={titre}
                                                 name="titre"
                                                 type="text"
+                                                required
                                                 className="form-control" />
                                         </div>
 
@@ -128,10 +151,10 @@ function FormModal() {
                                                         <div className="vs-radio-con">
                                                             <input
                                                                 onChange={handleChange}
-                                                                value="Lecon"
+                                                                value="lecon"
                                                                 type="radio"
                                                                 name="categorie"
-                                                                checked={categorie === 'Lecon'}
+                                                                checked={categorie === 'lecon'}
                                                             />
                                                             <span className="vs-radio">
                                                                 <span className="vs-radio--border"></span>
@@ -155,10 +178,10 @@ function FormModal() {
                                                         <div className="vs-radio-con">
                                                             <input
                                                                 onChange={handleChange}
-                                                                value="Exercice"
+                                                                value="exercice"
                                                                 type="radio"
                                                                 name="categorie"
-                                                                checked={categorie === 'Exercice'}
+                                                                checked={categorie === 'exercice'}
                                                             />
                                                             <span className="vs-radio">
                                                                 <span className="vs-radio--border"></span>
@@ -180,6 +203,7 @@ function FormModal() {
                                                 name="description"
                                                 className="form-control"
                                                 rows="3"
+                                                required
                                                 placeholder="Description"></textarea>
                                         </div>
 
@@ -189,6 +213,7 @@ function FormModal() {
                                                 onChange={handleChange}
                                                 value={type}
                                                 name="type"
+                                                required
                                                 className="form-control" >
                                                 {
                                                     typeList?.map((listType, i) => {
@@ -200,12 +225,13 @@ function FormModal() {
                                             </select>
                                         </div>
                                         <div className="col-sm-12 data-field-col">
+                                            {console.log({ niveau })}
                                             <label >Niveau </label>
                                             <select
-
                                                 onChange={handleChange}
                                                 value={niveau}
                                                 name="niveau"
+                                                required
                                                 className="form-control" >
                                                 {
                                                     niveauList?.map((listNiveau, i) => {
@@ -225,6 +251,7 @@ function FormModal() {
                                                 onChange={onUpload}
                                                 name="contenu"
                                                 type="file"
+                                                required
                                                 accept="application/pdf"
                                                 className="form-control"
                                             />

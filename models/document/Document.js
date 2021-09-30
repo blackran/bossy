@@ -41,6 +41,15 @@ const DocumentSchema = new mongoose.Schema({
     { timestamps: true }
 )
 
+// DocumentSchema.pre('remove', function (next) {
+//     this.model('Type').remove({ type: this._id }, next);
+//     next();
+// })
+
+// DocumentSchema.pre('remove', function (next) {
+//     this.model('Niveau').remove({ niveau: this._id }, next);
+//     next();
+// })
 
 const document = mongoose.model('document', DocumentSchema)
 

@@ -1,21 +1,23 @@
 const Type = require('../../models/document/Type')
+const Document = require('../../models/document/Document')
 const ErrorFormatter = require('../../utils/errorFormatter')
-const TypeService= require('../../services/document/Type')
+const TypeService = require('../../services/document/Type')
 
 
-exports.createType =  async (req, res) => {
-    
-    try{
-            
+
+exports.createType = async (req, res) => {
+
+    try {
+
         const isTypeAlredyExist = await TypeService.findTypeAlreadyExist(req)
-        if(isTypeAlredyExist.data){
+        if (isTypeAlredyExist.data) {
             return res.status(400).json({
                 status: 'fail',
                 message: 'Type already exist'
-        })
+            })
 
-        }else{
-            const newType = await Type.create(req.body,function(err,newType){
+        } else {
+            const newType = await Type.create(req.body, function (err, newType) {
 
                 if (err) {
                     return res.status(400).json({
@@ -25,17 +27,17 @@ exports.createType =  async (req, res) => {
                 }
                 return res.status(201).json({
                     status: 'success',
-                    data:{
+                    data: {
                         Type: newType
                     }
                 })
             });
 
         }
-        
+
     }
-    catch(err){
-        
+    catch (err) {
+
         return res.status(400).json({
             status: 'fail',
             debugInfo: err.message
@@ -45,30 +47,30 @@ exports.createType =  async (req, res) => {
 
 }
 
-exports.getAllType= async (req, res) => {
+exports.getAllType = async (req, res) => {
 
-    try{
-   
+    try {
+
         const type = await Type.find({}).exec((err, listType) => {
-              if(err){
+            if (err) {
                 return res.status(400).json({
-                    status:'something went wrong',
-                    message:'can not get listType'
+                    status: 'something went wrong',
+                    message: 'can not get listType'
                 });
             }
             return res.status(200).json({
-                status:'succes',
-                data:{
+                status: 'succes',
+                data: {
                     Type: listType
                 }
             })
         })
 
 
-    }catch(err){
+    } catch (err) {
         return res.status(400).json({
-            status:'fail',
-            message:err.message
+            status: 'fail',
+            message: err.message
         });
 
 
@@ -77,80 +79,97 @@ exports.getAllType= async (req, res) => {
 
 exports.updateType = async (req, res) => {
 
-    try{
+    try {
 
-        const  idTypeIsExist = await Type.find({
+        const idTypeIsExist = await Type.find({
             _id: req.params.id
         })
 
-        if(idTypeIsExist.length <= 0){
-           return res.status(400).json({
-               status:'something went wrong',
-               message:'no Type found with ID '+req.params.id 
-           });
+        if (idTypeIsExist.length <= 0) {
+            return res.status(400).json({
+                status: 'something went wrong',
+                message: 'no Type found with ID ' + req.params.id
+            });
         }
 
         const isTypeAlredyExist = await TypeService.findTypeAlreadyExist(req)
-        if(isTypeAlredyExist.data){
+        if (isTypeAlredyExist.data) {
             return res.status(400).json({
                 status: 'fail',
                 message: 'Type already exist'
             })
-        }   
-        else{
-            const newType = await Type.findByIdAndUpdate(req.params.id, req.body , {new: true , runValidators: true}, function(err, Type)  {
-                if (err) {
-                    return res.status(400).json({
-                        status: 'something went wrong',
-                        debugInfo: errorFormatter(err.message)
-                    })
-                }
-                return res.status(200).json({
-                    status:'success',
-                    data: Type
-        
-                });
+        }
+        else {
+            const Type = await Type.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true }).exec()
+            if (Type) {
+                return res.status(400).json({
+                    status: 'something went wrong',
+                    debugInfo: errorFormatter(err.message)
+                })
+            }
+            return res.status(200).json({
+                status: 'success',
+                data: Type
+
             });
-            
-            
+
+
         }
 
-    }   catch(err){
-            return res.status(400).json({
-                status: 'fail',
-                message: 'err'
+    } catch (err) {
+        return res.status(400).json({
+            status: 'fail',
+            message: 'err'
 
-             })
-        }
+        })
+    }
 
 }
 
+exports.getType = catchAsync(async (req, res) => {
+
+    const type = await Type.findById({ _id: req.params.id }).exec()
+
+    if (!type) {
+        return res.status(400).json({
+            status: 'something went wrong',
+            message: 'no type found with ID ' + req.params.id
+        });
+    }
+    return res.status(200).json({
+        status: 'success',
+        data: type
+    })
+
+})
 
 exports.deleteType = async (req, res) => {
 
-    try{
-        const newType = await Type.findByIdAndDelete(req.params.id ,function(err, Type){
-            if(err){
-                return res.status(400).json({
-                    status:'something went wrong',
-                    message:'can not delete Type with ID '+ req.params.id
-                });
-            }
-            return res.status(200).json({
-                status:'success',
-                data: Type
-            })
+    try {
+        const Type = await Type.remove(req.params.id).exec();
+        await Document.remove({ type: req.params.id })
 
-        });
-       
-
-    }   catch(err){
-            return res.status(404).json({
-                status: 'fail',
-                message: err.message
-    
-            })
+        if (!Type) {
+            return res.status(400).json({
+                status: 'something went wrong',
+                message: 'can not delete Type with ID ' + req.params.id
+            });
         }
+        return res.status(200).json({
+            status: 'success',
+            data: Type
+        })
+
+
+
+
+    } catch (err) {
+        return res.status(404).json({
+            status: 'fail',
+            message: err.message
+
+        })
+    }
 
 
 }

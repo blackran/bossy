@@ -1,2 +1,0 @@
-(this.webpackJsonpclient=this.webpackJsonpclient||[]).push([[26],{117:function(t,c,e){"use strict";e.r(c),c.default=e.p+"static/media/heart_contained.d6a274c7.svg"}}]);
-//# sourceMappingURL=26.1108223e.chunk.js.map

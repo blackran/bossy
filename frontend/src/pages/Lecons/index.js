@@ -1,6 +1,6 @@
 import React from 'react';
 import './statics/css/Principal.css';
-import { TypeDocument } from '../../components';
+import { NiveauDocument } from '../../components';
 import Navigation from '../Navigation';
 import axios from 'axios';
 
@@ -11,7 +11,6 @@ function Lecons(props) {
     axios.get('api/documentMemeCategorie/lecon')
       .then(({ data }) => {
         if (data.status === 'success') {
-          console.log(data.data)
           setLecons(data.data)
         }
       })
@@ -22,18 +21,35 @@ function Lecons(props) {
   }, [])
 
   const filtreNiveau = (datas) => {
-    let newData = {};
-    console.log({ datas })
+    let newDatas = {};
     datas?.map(data => {
-      if (newData[data.niveau.niveau]) {
-        newData[data.niveau.niveau] = [...newData[data.niveau.niveau], data]
+      if (newDatas[data.niveau.niveau]) {
+        newDatas[data.niveau.niveau] = [...newDatas[data.niveau.niveau], data]
       } else {
-        newData[data.niveau.niveau] = [data]
+        newDatas[data.niveau.niveau] = [data]
       }
       return null
     })
-    return newData
+
+    const respData = {};
+    Object.entries(newDatas).map(([key, newDataMap]) => {
+      let stock = {}
+      newDataMap.map(newData => {
+        if (stock[newData.type.type]) {
+          stock[newData.type.type] = [...stock[newData.type.type], newData]
+        } else {
+          stock[newData.type.type] = [newData];
+        }
+
+        respData[key] = stock;
+        return null
+      })
+      return null
+    })
+
+    return respData;
   }
+
   return (
     <div className="Principal">
       <Navigation {...props} />
@@ -52,7 +68,7 @@ function Lecons(props) {
             Object.entries(filtreNiveau(lecons)).map(([niveau, documents]) => {
               return <div className="section" id={niveau} key={niveau}>
                 Lecon pour les {niveau}
-                <TypeDocument {...{ documents, ...props }} />
+                <NiveauDocument {...{ documents, ...props }} />
               </div>
             })
           }

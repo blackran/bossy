@@ -131,7 +131,9 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // 1)Check if email and password exit
   if (!email || !password) {
-    throw new Error("Veuillez entrer l'email et le mot de passe");
+    return res.status(401).send(
+      { message: "Veuillez entrer l'email et le mot de passe" }
+    );
   }
 
   // 2)CHECK IF USER $ Password exits

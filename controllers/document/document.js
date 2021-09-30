@@ -7,21 +7,21 @@ const catchAsync = require('../../utils/catchAsync');
 
 exports.createDocument = catchAsync(async (req, res) => {
 
-  const isTypeExist = await DocumentService.findTypeExist(req)
-  if (!isTypeExist.data) {
-    return res.status(400).json({
-      status: 'fail',
-      message: 'Type not exist in DB'
-    })
-  }
+  // const isTypeExist = await DocumentService.findTypeExist(req)
+  // if (!isTypeExist.data) {
+  //   return res.status(400).json({
+  //     status: 'fail',
+  //     message: 'Type not exist in DB'
+  //   })
+  // }
 
-  const isNiveauExist = await DocumentService.findNiveauExist(req)
-  if (!isNiveauExist.data) {
-    return res.status(400).json({
-      status: 'fail',
-      message: 'Niveau not exist in DB'
-    })
-  }
+  // const isNiveauExist = await DocumentService.findNiveauExist(req)
+  // if (!isNiveauExist.data) {
+  //   return res.status(400).json({
+  //     status: 'fail',
+  //     message: 'Niveau not exist in DB'
+  //   })
+  // }
 
   let newDocument = new Document({
     titre: req.body.titre,

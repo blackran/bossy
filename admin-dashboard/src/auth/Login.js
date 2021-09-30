@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import { authenticate, getUser } from '../helpers/Helpers';
+import Swal from "sweetalert2";
 
 const Login = props => {
     // create a state
@@ -12,7 +13,7 @@ const Login = props => {
     const { email, password } = state; // destructure values from state
 
     useEffect(() => {
-        getUser() && props.history.push('/principal');
+        getUser() && props.history.push('/');
     }, [props.history]);
 
     // onchange event handler
@@ -28,12 +29,15 @@ const Login = props => {
             .then(response => {
                 console.log(response);
                 // response will contain token and name
-                authenticate(response, () => props.history.push('/principal'));
+                authenticate(response, () => props.history.push('/dashboard'));
                 // redirect to create page
             })
             .catch(error => {
-                console.log(error.response);
-                alert(error.response.data.error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'oups...',
+                    text: "Votre E-mail ou mots de passe est incorrect ! réessayer",
+                })
             });
     };
     return (

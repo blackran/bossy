@@ -1,2 +1,0 @@
-(this.webpackJsonpclient=this.webpackJsonpclient||[]).push([[12],{103:function(t,e,c){"use strict";c.r(e),e.default=c.p+"static/media/attachment.292eca0e.svg"}}]);
-//# sourceMappingURL=12.0add531a.chunk.js.map

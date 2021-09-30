@@ -2,8 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 // const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
-const xss = require('xss-clean');
-const hpp = require('hpp');
+// const xss = require('xss-clean');
+// const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
@@ -22,17 +22,17 @@ app.options('*', cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// Error
-const AppError = require('./utils/appError');
-
-//routes
-const userRoutes = require('./routes/userRoutes');
+// // Error
+// const AppError = require('./utils/appError');
+//
+// //routes
+// const userRoutes = require('./routes/userRoutes');
 
 
 // Body parser middleware
 app.use(express.json());
 app.use(express.urlencoded({
-    extended: true
+  extended: true
 }));
 
 dotenv.config({ path: './config.env' });
@@ -53,68 +53,57 @@ dotenv.config({ path: './config.env' });
 
 // Local
 mongoose
-    .connect(process.env.DATABASE_LOCAL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
+  .connect(process.env.DATABASE_LOCAL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 
-    })
-    .then(() => console.log('MongoDB connecté'))
-    .catch(err => console.log(err));
-
-
+  })
+  .then(() => console.log('MongoDB connecté'))
+  .catch(err => console.log(err));
 
 
 // Use Routes
 readdirSync('./routes').map((r) =>
-    app.use('/api', require(`./routes/${r}`))
+  app.use('/api', require(`./routes/${r}`))
 );
 
 
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(mongoSanitize());
-// app.use(xss());
 
 
 
-// 404 Page not Found
-// app.all('*', (req, res, next) => {
+app.use('/admin-dashboard/', express.static(path.resolve(__dirname, 'admin-dashboard', 'build')));
+app.use('/', express.static(path.resolve(__dirname, 'frontend', 'build')));
+app.use('/', express.static(path.resolve(__dirname, 'admin-dashboard', 'build')));
 
-//     next(new AppError(`Impossible de trouver ${req.originalUrl} sur ce serveur`));
-// });
-
-// app.use('/backoffice/', express.static(path.join(__dirname, 'admin-dashboard/build')));
-// app.get('/backoffice/*', function(req, res) {
-//   res.sendFile(path.join(__dirname, 'admin-dashboard/build/index.html'));
-// });
-
-app.use('/backoffice',express.static(path.join(__dirname, 'admin-dashboard/build')));
-app.get('/backoffice/*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'admin-dashboard/build/index.html'));
+app.get('/admin-dashboard/*', function(req, res) {
+  return res.sendFile(path.resolve(__dirname, './admin-dashboard/build', 'index.html'));
 });
 
-app.use(express.static(path.join(__dirname, 'frontend/build')));
+
 app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'frontend/build/index.html'));
+  return res.sendFile(path.resolve(__dirname, 'frontend/build', 'index.html'));
 });
-
 
 const port = process.env.PORT || 5000;
+const portOffice = 3000;
 
 const server = app.listen(port, () => console.log(`Serveur exécuté sur le port ${port}`));
 
 // Errors outside Express Unhandled Rejections
 process.on('unhandledRejection', err => {
-    console.log('REJET NON GÉRÉ ! Arrêt.....');
-    console.log(err.name, err.message);
-    server.close(() => {
-        process.exit(1);
-    });
+  console.log('REJET NON GÉRÉ ! Arrêt.....');
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
 });
 
 process.on('SIGTERM', () => {
-    console.log('SIGTERM REÇU. Arrêter gracieusement');
-    server.close(() => {
-        console.log('Processus terminé!');
-    });
+  console.log('SIGTERM REÇU. Arrêter gracieusement');
+  server.close(() => {
+    console.log('Processus terminé!');
+  });
 });
